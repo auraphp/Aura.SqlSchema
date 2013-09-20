@@ -3,18 +3,18 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * Microsoft SQL Server schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 class SqlsrvSchema extends AbstractSchema
@@ -34,7 +34,7 @@ class SqlsrvSchema extends AbstractSchema
     public function fetchTableList($schema = null)
     {
         $text = "SELECT name FROM sysobjects WHERE type = 'U' ORDER BY name";
-        return $this->pdo->fetchCol($text);
+        return $this->pdoFetchCol($text);
     }
 
     /**
@@ -55,13 +55,13 @@ class SqlsrvSchema extends AbstractSchema
         list($schema, $table) = $this->splitName($spec);
 
         // get column info
-        $text = "exec sp_columns @table_name = " . $this->pdo->quoteName($table);
-        $raw_cols = $this->pdo->fetchAll($text);
+        $text = "exec sp_columns @table_name = " . $this->quoteName($table);
+        $raw_cols = $this->pdoFetchAll($text);
 
         // get primary key info
         $text = "exec sp_pkeys @table_owner = " . $raw_cols[0]['TABLE_OWNER']
-              . ", @table_name = " . $this->pdo->quoteName($table);
-        $raw_keys = $this->pdo->fetchAll($text);
+              . ", @table_name = " . $this->quoteName($table);
+        $raw_keys = $this->pdoFetchAll($text);
         $keys = array();
         foreach ($raw_keys as $row) {
             $keys[] = $row['COLUMN_NAME'];

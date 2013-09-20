@@ -1,9 +1,9 @@
 {
     "name": "aura-bundle/sql-schema",
     "type": "library",
-    "description": "A bundle that provides functions for schema discovery.",
+    "description": "A bundle that provides tools for schema discovery.",
     "keywords": [ "mysql", "pdo", "pgsql", "postgres", "postgresql", "sqlite", "sql server", "sqlserver", "sqlsrv", "schema" ],
-    "homepage": "http://auraphp.github.com/Aura.Sql_Schema_Bundle",
+    "homepage": "http://auraphp.github.com/Aura.Sql_Schema",
     "license": "BSD-2-Clause",
     "authors": [
         {
@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "aura/sql": ">=2.0.0"
+        "aura/sql": "dev-aura.sql.pdo"
     },
     "autoload": {
         "files": ["autoload.php"]

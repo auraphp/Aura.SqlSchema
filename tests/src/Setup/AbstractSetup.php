@@ -1,7 +1,7 @@
 <?php
-namespace Aura\Sql_Schema_Bundle\Setup;
+namespace Aura\Sql_Schema\Setup;
 
-use Aura\Sql\PdoFactory;
+use PDO;
 
 abstract class AbstractSetup
 {
@@ -21,15 +21,14 @@ abstract class AbstractSetup
     {
         $pdo_params = $GLOBALS[get_class($this)]['pdo_params'];
         
-        $pdo_factory = new PdoFactory;
-        
-        $this->pdo = $pdo_factory->newInstance(
+        $this->pdo = new PDO(
             $pdo_params['dsn'],
             $pdo_params['username'],
             $pdo_params['password'],
-            $pdo_params['options'],
-            $pdo_params['attributes']
+            $pdo_params['options']
         );
+        
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
         $this->dropSchemas();
         $this->createSchemas();
@@ -85,8 +84,8 @@ abstract class AbstractSetup
         
         $stm = "INSERT INTO {$this->table} (name) VALUES (:name)";
         foreach ($names as $name) {
-            $this->pdo->bindValues(['name' => $name]);
-            $this->pdo->exec($stm);
+            $sth = $this->pdo->prepare($stm);
+            $sth->execute(['name' => $name]);
         }
     }
 }

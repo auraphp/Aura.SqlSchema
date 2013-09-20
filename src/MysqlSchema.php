@@ -3,22 +3,26 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * MySQL schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 class MysqlSchema extends AbstractSchema
 {
+    protected $quote_name_prefix = '`';
+    
+    protected $quote_name_suffix = '`';
+    
     /**
      * 
      * Returns a list of tables in the database.
@@ -33,9 +37,9 @@ class MysqlSchema extends AbstractSchema
     {
         $text = 'SHOW TABLES';
         if ($schema) {
-            $text .= ' IN ' . $this->pdo->quoteName($schema);
+            $text .= ' IN ' . $this->quoteName($schema);
         }
-        return $this->pdo->fetchCol($text);
+        return $this->pdoFetchCol($text);
     }
 
     /**
@@ -53,17 +57,17 @@ class MysqlSchema extends AbstractSchema
     {
         list($schema, $table) = $this->splitName($spec);
 
-        $table = $this->pdo->quoteName($table);
+        $table = $this->quoteName($table);
         $text = "SHOW COLUMNS FROM $table";
 
         if ($schema) {
             $schema = preg_replace('/[^\w]/', '', $schema);
-            $schema = $this->pdo->quoteName($schema);
+            $schema = $this->quoteName($schema);
             $text .= " IN $schema";
         }
 
         // get the column descriptions
-        $raw_cols = $this->pdo->fetchAll($text);
+        $raw_cols = $this->pdoFetchAll($text);
 
         // where the column info will be stored
         $cols = array();

@@ -3,18 +3,18 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * An interface for schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 interface SchemaInterface

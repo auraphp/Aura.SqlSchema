@@ -3,24 +3,28 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
-use Aura\Sql\PdoInterface;
+use PDO;
 
 /**
  * 
  * Abstract schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 abstract class AbstractSchema implements SchemaInterface
 {
+    protected $quote_name_prefix = '`';
+    
+    protected $quote_name_suffix = '`';
+    
     /**
      * 
      * A ColumnFactory for returning column information.
@@ -43,15 +47,13 @@ abstract class AbstractSchema implements SchemaInterface
      * 
      * Constructor.
      * 
-     * @param PdoInterface $pdo A database connection.
+     * @param PDO $pdo A database connection.
      * 
      * @param ColumnFactory $column_factory A column object factory.
      * 
      */
-    public function __construct(
-        PdoInterface $pdo,
-        ColumnFactory $column_factory
-    ) {
+    public function __construct(PDO $pdo, ColumnFactory $column_factory)
+    {
         $this->pdo = $pdo;
         $this->column_factory = $column_factory;
     }
@@ -155,5 +157,64 @@ abstract class AbstractSchema implements SchemaInterface
         } else {
             return array(substr($name, 0, $pos), substr($name, $pos+1));
         }
+    }
+
+    /**
+     * 
+     * Quotes a single identifier name (table, table alias, table column, 
+     * index, sequence).
+     * 
+     * If the name contains `' AS '`, this method will separately quote the
+     * parts before and after the `' AS '`.
+     * 
+     * If the name contains a space, this method will separately quote the
+     * parts before and after the space.
+     * 
+     * If the name contains a dot, this method will separately quote the
+     * parts before and after the dot.
+     * 
+     * @param string $name The identifier name to quote.
+     * 
+     * @return string|array The quoted identifier name.
+     * 
+     * @see replaceName()
+     * 
+     */
+    public function quoteName($name)
+    {
+        // remove extraneous spaces
+        $name = trim($name);
+
+        // "name"."name"
+        $pos = strrpos($name, '.');
+        if ($pos) {
+            $one = $this->quoteName(substr($name, 0, $pos));
+            $two = $this->quoteName(substr($name, $pos + 1));
+            return "{$one}.{$two}";
+        }
+
+        // "name"
+        return $this->quote_name_prefix . $name . $this->quote_name_suffix;
+    }
+    
+    protected function pdoFetchAll($statement, array $values = array())
+    {
+        $sth = $this->pdo->prepare($statement);
+        $sth->execute($values);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    protected function pdoFetchCol($statement, array $values = array())
+    {
+        $sth = $this->pdo->prepare($statement);
+        $sth->execute($values);
+        return $sth->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+    
+    protected function pdoFetchValue($statement, array $values = array())
+    {
+        $sth = $this->pdo->prepare($statement);
+        $sth->execute($values);
+        return $sth->fetchColumn(0);
     }
 }

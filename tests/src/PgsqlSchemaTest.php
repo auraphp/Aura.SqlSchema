@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 class PgsqlSchemaTest extends AbstractSchemaTest
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Sql_Schema_Bundle\Setup;
+namespace Aura\Sql_Schema\Setup;
 
 class SqliteSetup extends AbstractSetup
 {

@@ -3,18 +3,18 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * Represents one column from a table.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 class Column
@@ -174,12 +174,12 @@ class Column
      *
      * @param array $array Column property.
      *
-     * @return object \Aura\Sql_Schema_Bundle\Column.
+     * @return object \Aura\Sql_Schema\Column.
      *
      */
     public static function __set_state($array)
     {
-        $column = new \Aura\Sql_Schema_Bundle\Column(
+        $column = new \Aura\Sql_Schema\Column(
             $array['name'],
             $array['type'],
             $array['size'],

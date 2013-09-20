@@ -3,18 +3,18 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * PostgreSQL schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 class PgsqlSchema extends AbstractSchema
@@ -37,6 +37,7 @@ class PgsqlSchema extends AbstractSchema
                 FROM information_schema.tables
                 WHERE table_schema = :schema
             ";
+            $values = array('schema' => $schema);
         } else {
             $cmd = "
                 SELECT table_schema || '.' || table_name
@@ -44,9 +45,10 @@ class PgsqlSchema extends AbstractSchema
                 WHERE table_schema != 'pg_catalog'
                 AND table_schema != 'information_schema'
             ";
+            $values = array();
         }
 
-        return $this->pdo->fetchCol($cmd, array('schema' => $schema));
+        return $this->pdoFetchCol($cmd, $values);
     }
 
     /**
@@ -83,8 +85,11 @@ class PgsqlSchema extends AbstractSchema
             WHERE a.attnum > 0 AND c.relname = :table
         ";
 
+        $bind_values = array('table' => $table);
+        
         if ($schema) {
             $cmd .= " AND n.nspname = :schema";
+            $bind_values['schema'] = $schema;
         }
 
         $cmd .= "\n            ORDER BY a.attnum";
@@ -93,10 +98,7 @@ class PgsqlSchema extends AbstractSchema
         $cols = array();
 
         // get the column descriptions
-        $raw_cols = $this->pdo->fetchAll($cmd, array(
-            'table' => $table,
-            'schema' => $schema,
-        ));
+        $raw_cols = $this->pdoFetchAll($cmd, $bind_values);
 
         // loop through the result rows; each describes a column.
         foreach ($raw_cols as $val) {

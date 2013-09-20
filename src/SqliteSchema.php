@@ -3,18 +3,18 @@
  * 
  * This file is part of Aura for PHP.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  * @license http://opensource.org/licenses/bsd-license.php BSD
  * 
  */
-namespace Aura\Sql_Schema_Bundle;
+namespace Aura\Sql_Schema;
 
 /**
  * 
  * SQLite schema discovery tools.
  * 
- * @package Aura.Sql_Schema_Bundle
+ * @package Aura.Sql_Schema
  * 
  */
 class SqliteSchema extends AbstractSchema
@@ -56,7 +56,7 @@ class SqliteSchema extends AbstractSchema
             ";
         }
 
-        return $this->pdo->fetchCol($cmd);
+        return $this->pdoFetchCol($cmd);
     }
 
     /**
@@ -91,11 +91,11 @@ class SqliteSchema extends AbstractSchema
             SELECT sql FROM {$schema}sqlite_master
             WHERE type = 'table' AND name = :table
         ";
-        $create_table = $this->pdo->fetchValue($cmd, array('table' => $table));
+        $create_table = $this->pdoFetchValue($cmd, array('table' => $table));
 
         // get the column descriptions
-        $table = $this->pdo->quoteName($table);
-        $raw_cols = $this->pdo->fetchAll("PRAGMA {$schema}TABLE_INFO($table)");
+        $table = $this->quoteName($table);
+        $raw_cols = $this->pdoFetchAll("PRAGMA {$schema}TABLE_INFO($table)");
 
         // loop through the result rows; each describes a column.
         foreach ($raw_cols as $val) {

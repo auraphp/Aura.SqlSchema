@@ -7,15 +7,15 @@ class PgsqlSchemaTest extends AbstractSchemaTest
     
     protected $pdo_type = 'pgsql';
     
-    protected $expect_fetch_table_list = [
+    protected $expect_fetch_table_list = array(
         'aura_test_schema1.aura_test_table',
         'aura_test_schema2.aura_test_table'
-    ];
+    );
     
-    protected $expect_fetch_table_list_schema = ['aura_test_table'];
+    protected $expect_fetch_table_list_schema = array('aura_test_table');
     
-    protected $expect_fetch_table_cols = [
-        'id' => [
+    protected $expect_fetch_table_cols = array(
+        'id' => array(
             'name' => 'id',
             'type' => 'integer',
             'size' => null,
@@ -24,8 +24,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => true,
             'primary' => true,
             'autoinc' => true,
-        ],
-        'name' => [
+        ),
+        'name' => array(
             'name' => 'name',
             'type' => 'character varying',
             'size' => 50,
@@ -34,8 +34,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => true,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_size_scale' => [
+        ),
+        'test_size_scale' => array(
             'name' => 'test_size_scale',
             'type' => 'numeric',
             'size' => 7,
@@ -44,8 +44,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_null' => [
+        ),
+        'test_default_null' => array(
             'name' => 'test_default_null',
             'type' => 'character',
             'size' => 3,
@@ -54,8 +54,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_string' => [
+        ),
+        'test_default_string' => array(
             'name' => 'test_default_string',
             'type' => 'character varying',
             'size' => 7,
@@ -64,8 +64,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_number' => [
+        ),
+        'test_default_number' => array(
             'name' => 'test_default_number',
             'type' => 'numeric',
             'size' => 5,
@@ -74,8 +74,8 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_ignore' => [
+        ),
+        'test_default_ignore' => array(
             'name' => 'test_default_ignore',
             'type' => 'timestamp without time zone',
             'size' => null,
@@ -84,6 +84,6 @@ class PgsqlSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-    ];
+        ),
+    );
 }

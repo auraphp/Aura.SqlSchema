@@ -1,8 +1,7 @@
-Aura.Sql.Schema
-===============
+# Aura.Sql_Schema
 
 This library provides facilities to read table names and table columns from a
-database.
+database using a _PDO_ connection.
 
 
 ## Preliminaries
@@ -18,9 +17,8 @@ _autoload.php_ file.
 
 ### Dependencies and PHP Version
 
-Because this is an Aura bundle and not a library, it has dependencies on other
-Aura libraries; these can be found in the _composer.json_ file. This bundle
-requires PHP version 5.3 or later (as opposed to most other Aura packages,
+As with all Aura libraries, this library has no external dependencies. It
+requires PHP version 5.3 or later (as opposed to most other Aura libraries,
 which require PHP 5.4 or later).
 
 ### Tests
@@ -35,8 +33,8 @@ the command line.
 
 ### PSR Compliance
 
-This library attempts to comply to [PSR-1][], [PSR-2][], and [PSR-4][]. If you
-notice compliance oversights, please send a patch via pull request.
+This library attempts to comply with [PSR-1][], [PSR-2][], and [PSR-4][]. If
+you notice compliance oversights, please send a patch via pull request.
 
 [PSR-1]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md
 [PSR-2]: https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md
@@ -45,8 +43,7 @@ notice compliance oversights, please send a patch via pull request.
 
 ## Getting Started
 
-Instantiation
--------------
+### Instantiation
 
 Instantiate a driver-specific schema object with a matching database
 connection:

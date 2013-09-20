@@ -1,7 +1,7 @@
 {
     "name": "aura/sql-schema",
     "type": "library",
-    "description": "A bundle that provides tools for schema discovery.",
+    "description": "Provides facilities to read table names and table columns from a database using PDO.",
     "keywords": [ "mysql", "pdo", "pgsql", "postgres", "postgresql", "sqlite", "sql server", "sqlserver", "sqlsrv", "schema" ],
     "homepage": "http://auraphp.github.com/Aura.Sql_Schema",
     "license": "BSD-2-Clause",

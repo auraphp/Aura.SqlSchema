@@ -132,7 +132,7 @@ abstract class AbstractSchema implements SchemaInterface
             }
         }
 
-        return [$type, $size, $scale];
+        return array($type, $size, $scale);
     }
 
     /**
@@ -151,9 +151,9 @@ abstract class AbstractSchema implements SchemaInterface
     {
         $pos = strpos($name, '.');
         if ($pos === false) {
-            return [null, $name];
+            return array(null, $name);
         } else {
-            return [substr($name, 0, $pos), substr($name, $pos+1)];
+            return array(substr($name, 0, $pos), substr($name, $pos+1));
         }
     }
 }

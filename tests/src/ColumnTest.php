@@ -5,7 +5,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $info = [
+        $info = array(
             'name' => 'cost',
             'type' => 'numeric',
             'size' => 10,
@@ -14,7 +14,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'default' => null,
             'autoinc' => false,
             'primary' => false,
-        ];
+        );
         
         $col = new Column(
             $info['name'],
@@ -40,7 +40,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
     
     public function test__set_state()
     {
-        $info = [
+        $info = array(
             'name' => 'cost',
             'type' => 'numeric',
             'size' => 10,
@@ -49,7 +49,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'default' => null,
             'autoinc' => false,
             'primary' => false,
-        ];
+        );
         
         $col = new Column(
             $info['name'],

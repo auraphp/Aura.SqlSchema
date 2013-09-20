@@ -1,8 +1,12 @@
 <?php
-namespace Aura\Sql_Schema_Bundle\DbSetup;
+namespace Aura\Sql_Schema_Bundle\Setup;
 
-class Mysql extends AbstractDbSetup
+class MysqlSetup extends AbstractSetup
 {
+    protected $type = 'Mysql';
+    
+    protected $extension = 'pdo_mysql';
+    
     protected $create_table = "CREATE TABLE aura_test_table (
          id                     INTEGER AUTO_INCREMENT PRIMARY KEY
         ,name                   VARCHAR(50) NOT NULL
@@ -15,14 +19,14 @@ class Mysql extends AbstractDbSetup
     
     protected function createSchemas()
     {
-        $this->connection->query("CREATE DATABASE aura_test_schema1");
-        $this->connection->query("CREATE DATABASE aura_test_schema2");
-        $this->connection->query("USE aura_test_schema1");
+        $this->pdo->query("CREATE DATABASE aura_test_schema1");
+        $this->pdo->query("CREATE DATABASE aura_test_schema2");
+        $this->pdo->query("USE aura_test_schema1");
     }
     
     protected function dropSchemas()
     {
-        $this->connection->query("DROP DATABASE IF EXISTS aura_test_schema1");
-        $this->connection->query("DROP DATABASE IF EXISTS aura_test_schema2");
+        $this->pdo->query("DROP DATABASE IF EXISTS aura_test_schema1");
+        $this->pdo->query("DROP DATABASE IF EXISTS aura_test_schema2");
     }
 }

@@ -1,10 +1,12 @@
 <?php
-namespace Aura\Sql_Schema_Bundle\DbSetup;
+namespace Aura\Sql_Schema_Bundle\Setup;
 
-class Pgsql extends AbstractDbSetup
+class SqliteSetup extends AbstractSetup
 {
+    protected $type = 'Sqlite';
+    
     protected $create_table = "CREATE TABLE aura_test_table (
-         id                     SERIAL PRIMARY KEY
+         id                     INTEGER PRIMARY KEY AUTOINCREMENT
         ,name                   VARCHAR(50) NOT NULL
         ,test_size_scale        NUMERIC(7,3)
         ,test_default_null      CHAR(3) DEFAULT NULL
@@ -15,15 +17,12 @@ class Pgsql extends AbstractDbSetup
     
     protected function createSchemas()
     {
-        $this->connection->query("CREATE SCHEMA aura_test_schema1");
-        $this->connection->query("CREATE SCHEMA aura_test_schema2");
-        $this->connection->query("SET search_path TO aura_test_schema1");
+        // only need to create the second one
+        $this->pdo->query("ATTACH DATABASE ':memory:' AS aura_test_schema2");
     }
     
     protected function dropSchemas()
     {
-        $this->connection->query("DROP SCHEMA IF EXISTS aura_test_schema1 CASCADE");
-        $this->connection->query("DROP SCHEMA IF EXISTS aura_test_schema2 CASCADE");
+        // all in memory, no need to clean up
     }
-    
 }

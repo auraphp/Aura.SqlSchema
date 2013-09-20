@@ -66,7 +66,7 @@ class MysqlSchema extends AbstractSchema
         $raw_cols = $this->pdo->fetchAll($text);
 
         // where the column info will be stored
-        $cols = [];
+        $cols = array();
 
         // loop through the result rows; each describes a column.
         foreach ($raw_cols as $val) {

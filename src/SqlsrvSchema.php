@@ -62,12 +62,12 @@ class SqlsrvSchema extends AbstractSchema
         $text = "exec sp_pkeys @table_owner = " . $raw_cols[0]['TABLE_OWNER']
               . ", @table_name = " . $this->pdo->quoteName($table);
         $raw_keys = $this->pdo->fetchAll($text);
-        $keys = [];
+        $keys = array();
         foreach ($raw_keys as $row) {
             $keys[] = $row['COLUMN_NAME'];
         }
 
-        $cols = [];
+        $cols = array();
         foreach ($raw_cols as $row) {
 
             $name = $row['COLUMN_NAME'];

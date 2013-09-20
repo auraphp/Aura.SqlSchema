@@ -3,8 +3,6 @@ namespace Aura\Sql_Schema\Setup;
 
 class SqliteSetup extends AbstractSetup
 {
-    protected $type = 'Sqlite';
-    
     protected $create_table = "CREATE TABLE aura_test_table (
          id                     INTEGER PRIMARY KEY AUTOINCREMENT
         ,name                   VARCHAR(50) NOT NULL

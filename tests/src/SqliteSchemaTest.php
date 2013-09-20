@@ -7,12 +7,12 @@ class SqliteSchemaTest extends AbstractSchemaTest
     
     protected $pdo_type = 'sqlite';
     
-    protected $expect_fetch_table_list = ['aura_test_table', 'sqlite_sequence'];
+    protected $expect_fetch_table_list = array('aura_test_table', 'sqlite_sequence');
     
-    protected $expect_fetch_table_list_schema = ['aura_test_table', 'sqlite_sequence'];
+    protected $expect_fetch_table_list_schema = array('aura_test_table', 'sqlite_sequence');
     
-    protected $expect_fetch_table_cols = [
-        'id' => [
+    protected $expect_fetch_table_cols = array(
+        'id' => array(
             'name' => 'id',
             'type' => 'integer',
             'size' => null,
@@ -21,8 +21,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => true,
             'autoinc' => true,
-        ],
-        'name' => [
+        ),
+        'name' => array(
             'name' => 'name',
             'type' => 'varchar',
             'size' => 50,
@@ -31,8 +31,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => true,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_size_scale' => [
+        ),
+        'test_size_scale' => array(
             'name' => 'test_size_scale',
             'type' => 'numeric',
             'size' => 7,
@@ -41,8 +41,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_null' => [
+        ),
+        'test_default_null' => array(
             'name' => 'test_default_null',
             'type' => 'char',
             'size' => 3,
@@ -51,8 +51,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_string' => [
+        ),
+        'test_default_string' => array(
             'name' => 'test_default_string',
             'type' => 'varchar',
             'size' => 7,
@@ -61,8 +61,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_number' => [
+        ),
+        'test_default_number' => array(
             'name' => 'test_default_number',
             'type' => 'numeric',
             'size' => 5,
@@ -71,8 +71,8 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-        'test_default_ignore' => [
+        ),
+        'test_default_ignore' => array(
             'name' => 'test_default_ignore',
             'type' => 'timestamp',
             'size' => null,
@@ -81,6 +81,6 @@ class SqliteSchemaTest extends AbstractSchemaTest
             'notnull' => false,
             'primary' => false,
             'autoinc' => false,
-        ],
-    ];
+        ),
+    );
 }

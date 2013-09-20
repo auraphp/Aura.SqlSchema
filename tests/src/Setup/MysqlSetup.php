@@ -3,8 +3,6 @@ namespace Aura\Sql_Schema\Setup;
 
 class MysqlSetup extends AbstractSetup
 {
-    protected $type = 'Mysql';
-    
     protected $extension = 'pdo_mysql';
     
     protected $create_table = "CREATE TABLE aura_test_table (

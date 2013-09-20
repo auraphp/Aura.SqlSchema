@@ -5,8 +5,6 @@ use PDO;
 
 abstract class AbstractSetup
 {
-    protected $type;
-    
     protected $pdo;
     
     protected $table = 'aura_test_table';

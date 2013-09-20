@@ -25,8 +25,8 @@ get a `ConnectionFactory` and create your connection through it:
 
 ```php
 <?php
-$connection_factory = include '/path/to/Aura.Sql/scripts/instance.php';
-$connection = $connection_factory->newInstance(
+$pdo_factory = include '/path/to/Aura.Sql/scripts/instance.php';
+$pdo = $pdo_factory->newInstance(
     
     // adapter name
     'mysql',
@@ -48,9 +48,9 @@ build an connection factory manually:
     
 ```php
 <?php
-use Aura\Sql\ConnectionFactory;
-$connection_factory = new ConnectionFactory;
-$connection = $connection_factory->newInstance(...);
+use Aura\Sql_Schema_Bundle\ConnectionFactory;
+$pdo_factory = new ConnectionFactory;
+$pdo = $pdo_factory->newInstance(...);
 ```
     
 Aura SQL comes with four connection adapters: `'mysql'` for MySQL, `'pgsql'`
@@ -68,7 +68,7 @@ You can connect manually by issuing `connect()`:
 
 ```php
 <?php
-$connection->connect();
+$pdo->connect();
 ```
 
 
@@ -80,7 +80,7 @@ Once you have a connection, you can begin to fetch results from the database.
 ```php
 <?php
 // returns all rows
-$result = $connection->fetchAll('SELECT * FROM foo');
+$result = $pdo->fetchAll('SELECT * FROM foo');
 ```
 
 You can fetch results using these methods:
@@ -125,7 +125,7 @@ $bind = [
 
 // returns one row; the data has been parameterized
 // into a prepared statement for you
-$result = $connection->fetchOne($text, $bind);
+$result = $pdo->fetchOne($text, $bind);
 ```
 
 Aura SQL recognizes array values and quotes them as comma-separated lists:
@@ -143,7 +143,7 @@ $bind = [
 
 // returns all rows; the query ends up being
 // "SELECT * FROM foo WHERE id = 1 AND bar IN('a', 'b', 'c')"
-$result = $connection->fetchOne($text, $bind);
+$result = $pdo->fetchOne($text, $bind);
 ```
 
 
@@ -167,15 +167,15 @@ $cols = [
 ];
 
 // perform the insert; result is number of rows affected
-$result = $connection->insert($table, $cols);
+$result = $pdo->insert($table, $cols);
 
 // now get the last inserted ID
-$id = $connection->lastInsertId();
+$id = $pdo->lastInsertId();
 ```
 
 (N.b.: Because of the way PostgreSQL creates auto-incremented columns, the
 `pgsql` adapter needs to know the table and column name to get the last
-inserted ID; for example, `$id = $connection->lastInsertId($table, 'id');`.)
+inserted ID; for example, `$id = $pdo->lastInsertId($table, 'id');`.)
 
 Next, to update rows:
 
@@ -196,7 +196,7 @@ $cond = 'id = :id';
 $bind = ['id' => 1];
 
 // perform the update; result is number of rows affected
-$result = $connection->update($table, $cols, $cond, $bind);
+$result = $pdo->update($table, $cols, $cond, $bind);
 ```
 
 > (N.b.: Both `$cols` and `$bind` are bound into the update query, but `$cols`
@@ -217,7 +217,7 @@ $cond = 'id = :id';
 $bind = ['id' => 1];
 
 // perform the deletion; result is number of rows affected
-$result = $connection->delete($table, $cond, $bind);
+$result = $pdo->delete($table, $cond, $bind);
 ```
 
 
@@ -229,7 +229,7 @@ To get a list of tables in the database, issue `fetchTableList()`:
 ```php
 <?php
 // get the list of tables
-$list = $connection->fetchTableList();
+$list = $pdo->fetchTableList();
 
 // show them
 foreach ($list as $table) {
@@ -245,7 +245,7 @@ To get information about the columns in a table, issue `fetchTableCols()`:
 $table = 'foo';
 
 // get the cols
-$cols = $connection->fetchTableCols($table);
+$cols = $pdo->fetchTableCols($table);
 
 // show them
 foreach ($cols as $name => $col) {
@@ -286,15 +286,15 @@ Commits and rollbacks cause the connection to go back into autocommit mode.
 ```php
 <?php
 // turn off autocommit and start a transaction
-$connection->beginTransaction();
+$pdo->beginTransaction();
 
 try {
     // ... perform some queries ...
     // now commit to the database:
-    $connection->commit();
+    $pdo->commit();
 } catch (Exception $e) {
     // there was an error, roll back the queries
-    $connection->rollBack();
+    $pdo->rollBack();
 }
 
 // at this point we are back in autocommit mode
@@ -311,7 +311,7 @@ You can, of course, build and issue your own queries by hand. Use the
 <?php
 $text = "SELECT * FROM foo WHERE id = :id";
 $bind = ['id' => 1];
-$stmt = $connection->query($text, $bind)
+$stmt = $pdo->query($text, $bind)
 ```
 
 The returned `$stmt` is a [PDOStatement](http://php.net/PDOStatement) that you
@@ -325,13 +325,13 @@ You can use profiling to see how well your queries are performing.
 ```php
 <?php
 // turn on the profiler
-$connection->getProfiler()->setActive(true);
+$pdo->getProfiler()->setActive(true);
 
 // issue a query
-$result = $connection->fetchAll('SELECT * FROM foo');
+$result = $pdo->fetchAll('SELECT * FROM foo');
 
 // now get the profiler information
-foreach ($connection->getProfiler()->getProfiles() as $i => $profile) {
+foreach ($pdo->getProfiler()->getProfiles() as $i => $profile) {
     echo 'Query #' . ($i + 1)
        . ' took ' . $profile->time . ' seconds.'
        . PHP_EOL;
@@ -366,7 +366,7 @@ You can then modify the `Select` object and pass it to the `query()` or
 ```php
 <?php
 // create a new Select object
-$select = $connection->newSelect();
+$select = $pdo->newSelect();
 
 // SELECT * FROM foo WHERE bar > :bar AND zim = 'gir' ORDER BY baz
 $select->cols(['*'])
@@ -377,7 +377,7 @@ $select->cols(['*'])
 
 $bind = ['bar' => '88'];
 
-$list = $connection->fetchAll($select, $bind);
+$list = $pdo->fetchAll($select, $bind);
 
 // SELECT bar, COUNT(*) as cnt FROM foo GROUP BY bar HAVING bar > 5
 $select->cols(['bar', 'COUNT(*) as cnt'])
@@ -385,7 +385,7 @@ $select->cols(['bar', 'COUNT(*) as cnt'])
        ->groupBy(['bar'])
        ->having('bar > ?', 5);
 
-$list = $connection->fetchAll($select);
+$list = $pdo->fetchAll($select);
 ```
 
 The `Select` object has these methods and more; please read the source code
@@ -428,7 +428,7 @@ You can then modify the `Insert` object and pass it to the `query()` method.
 ```php
 <?php
 // create a new Insert object
-$insert = $connection->newInsert();
+$insert = $pdo->newInsert();
 
 // INSERT INTO foo (bar, baz, date) VALUES (:bar, :baz, NOW());
 $insert->into('foo')
@@ -440,7 +440,7 @@ $bind = [
     'baz' => 'zim',
 ];
 
-$stmt = $connection->query($insert, $bind);
+$stmt = $pdo->query($insert, $bind);
 ```
 
 Update
@@ -452,7 +452,7 @@ You can then modify the `Update` object and pass it to the `query()` method.
 ```php
 <?php
 // create a new Update object
-$update = $connection->newUpdate();
+$update = $pdo->newUpdate();
 
 // UPDATE foo SET bar = :bar, baz = :baz, date = NOW() WHERE zim = :zim OR gir = :gir
 $update->table('foo')
@@ -468,7 +468,7 @@ $bind = [
     'gir' => 'doom',
 ];
 
-$stmt = $connection->query($update, $bind);
+$stmt = $pdo->query($update, $bind);
 ```
 
 Delete
@@ -480,7 +480,7 @@ You can then modify the `Delete` object and pass it to the `query()` method.
 ```php
 <?php
 // create a new Delete object
-$delete = $connection->newDelete();
+$delete = $pdo->newDelete();
 
 // DELETE FROM WHERE zim = :zim OR gir = :gir
 $delete->from('foo')
@@ -492,5 +492,5 @@ $bind = [
     'gir' => 'doom',
 ];
 
-$stmt = $connection->query($delete, $bind);
+$stmt = $pdo->query($delete, $bind);
 ```

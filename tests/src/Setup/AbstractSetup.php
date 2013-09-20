@@ -83,7 +83,7 @@ abstract class AbstractSetup
         $stm = "INSERT INTO {$this->table} (name) VALUES (:name)";
         foreach ($names as $name) {
             $sth = $this->pdo->prepare($stm);
-            $sth->execute(['name' => $name]);
+            $sth->execute(array('name' => $name));
         }
     }
 }

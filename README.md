@@ -24,7 +24,7 @@ requires PHP version 5.3 or later.
 
 ### Tests
 
-[![Build Status](https://travis-ci.org/auraphp/Aura.{PACKAGE}.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Sql_Schema)
+[![Build Status](https://travis-ci.org/auraphp/Aura.Sql_Schema.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Sql_Schema)
 
 This library has 100% code coverage with [PHPUnit][]. To run the tests at the
 command line, go to the _tests_ directory and issue `phpunit`.
@@ -45,21 +45,20 @@ you notice compliance oversights, please send a patch via pull request.
 
 ### Instantiation
 
-Instantiate a driver-specific schema object with a matching database
-connection:
+Instantiate a driver-specific schema object with a matching
+[PDO](http://php.net/PDO) instance:
 
 ```php
 <?php
-use Aura\Sql\Schema\MysqlSchema;
+use Aura\Sql_Schema\MysqlSchema;
+use PDO;
 
 $pdo = new PDO(...);
 $schema = new MysqlSchema($pdo);
 ?>
 ```
 
-
-Retrieving Schema Information
------------------------------
+### Retrieving Schema Information
 
 To get a list of tables in the database, issue `fetchTableList()`:
 

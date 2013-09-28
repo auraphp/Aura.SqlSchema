@@ -36,9 +36,9 @@ abstract class AbstractSchema implements SchemaInterface
 
     /**
      * 
-     * A Aura\Sql\Pdo connection.
+     * A Pdo connection.
      * 
-     * @var PdoInterface
+     * @var PDO
      * 
      */
     protected $pdo;

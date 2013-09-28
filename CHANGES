@@ -1,1 +1,1 @@
-A bundle that uses Aura.Sql to read database schemas. PHP 5.3 compatible.
+Read database schemas using PDO. PHP 5.3 compatible.

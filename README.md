@@ -50,10 +50,14 @@ Instantiate a driver-specific schema object with a matching
 
 ```php
 <?php
-use Aura\Sql_Schema\MysqlSchema;
+use Aura\Sql_Schema\MysqlSchema; // for MySQL
+use Aura\Sql_Schema\PgsqlSchema; // for PostgreSQL
+use Aura\Sql_Schema\SqliteSchema; // for Sqlite
+use Aura\Sql_Schema\SqlsrvSchema; // for Microsoft SQL Server
 use PDO;
 
 $pdo = new PDO(...);
+
 $schema = new MysqlSchema($pdo);
 ?>
 ```

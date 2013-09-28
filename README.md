@@ -1,35 +1,35 @@
 # Aura.Sql_Schema
 
-This library provides facilities to read table names and table columns from a
-database using a _PDO_ connection.
+Provides facilities to read table names and table columns from a database
+using a [PDO](http://php.net/PDO) connection.
 
-
-## Preliminaries
+## Foreword
 
 ### Installation and Autoloading
 
-This library is installable via Composer and is registered on Packagist at
-<https://packagist.org/packages/aura/autoload>. Installing via Composer will
-set up autoloading automatically.
+This library is installable and autoloadable via Composer with the following
+`require` element in your `composer.json` file:
 
+    "require": {
+        "aura/sql-schema": "dev-develop-2"
+    }
+    
 Alternatively, download or clone this repository, then require or include its
 _autoload.php_ file.
 
 ### Dependencies and PHP Version
 
-As with all Aura libraries, this library has no external dependencies. It
-requires PHP version 5.3 or later (as opposed to most other Aura libraries,
-which require PHP 5.4 or later).
+As with all Aura libraries, this library has no userland dependencies. It
+requires PHP version 5.3 or later.
 
 ### Tests
 
-[![Build Status](https://travis-ci.org/auraphp/Aura.Sql.png?branch=aura.sql.schema)](https://travis-ci.org/auraphp/Aura.Autoload)
+[![Build Status](https://travis-ci.org/auraphp/Aura.{PACKAGE}.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Sql_Schema)
 
-This library has 100% code coverage. To run the library tests, first install
-[PHPUnit][], then go to the library _tests_ directory and issue `phpunit` at
-the command line.
+This library has 100% code coverage with [PHPUnit][]. To run the tests at the
+command line, go to the _tests_ directory and issue `phpunit`.
 
-[PHPUnit]: http://phpunit.de/manual/
+[phpunit]: http://phpunit.de/manual/
 
 ### PSR Compliance
 
@@ -50,11 +50,10 @@ connection:
 
 ```php
 <?php
-use Aura\Sql\MysqlConnection;
 use Aura\Sql\Schema\MysqlSchema;
 
-$connection = new MysqlConnection(...);
-$schema = new MysqlSchema($connection);
+$pdo = new PDO(...);
+$schema = new MysqlSchema($pdo);
 ?>
 ```
 

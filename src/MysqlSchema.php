@@ -19,8 +19,22 @@ namespace Aura\Sql_Schema;
  */
 class MysqlSchema extends AbstractSchema
 {
+    /**
+     * 
+     * The quote prefix for identifier names.
+     * 
+     * @var string
+     * 
+     */
     protected $quote_name_prefix = '`';
     
+    /**
+     * 
+     * The quote suffix for identifier names.
+     * 
+     * @var string
+     * 
+     */
     protected $quote_name_suffix = '`';
     
     /**

@@ -21,8 +21,22 @@ use PDO;
  */
 abstract class AbstractSchema implements SchemaInterface
 {
+    /**
+     * 
+     * The quote prefix for identifier names.
+     * 
+     * @var string
+     * 
+     */
     protected $quote_name_prefix = '`';
     
+    /**
+     * 
+     * The quote suffix for identifier names.
+     * 
+     * @var string
+     * 
+     */
     protected $quote_name_suffix = '`';
     
     /**
@@ -197,6 +211,17 @@ abstract class AbstractSchema implements SchemaInterface
         return $this->quote_name_prefix . $name . $this->quote_name_suffix;
     }
     
+    /**
+     * 
+     * Fetch all result rows.
+     * 
+     * @param string $statement The SQL statement.
+     * 
+     * @param array $values Values to bind to the SQL statement.
+     * 
+     * @return array
+     * 
+     */
     protected function pdoFetchAll($statement, array $values = array())
     {
         $sth = $this->pdo->prepare($statement);
@@ -204,6 +229,17 @@ abstract class AbstractSchema implements SchemaInterface
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    /**
+     * 
+     * Fetch the first column of all result rows.
+     * 
+     * @param string $statement The SQL statement.
+     * 
+     * @param array $values Values to bind to the SQL statement.
+     * 
+     * @return array
+     * 
+     */
     protected function pdoFetchCol($statement, array $values = array())
     {
         $sth = $this->pdo->prepare($statement);
@@ -211,6 +247,17 @@ abstract class AbstractSchema implements SchemaInterface
         return $sth->fetchAll(PDO::FETCH_COLUMN, 0);
     }
     
+    /**
+     * 
+     * Fetch the first column of the first row.
+     * 
+     * @param string $statement The SQL statement.
+     * 
+     * @param array $values Values to bind to the SQL statement.
+     * 
+     * @return mixed
+     * 
+     */
     protected function pdoFetchValue($statement, array $values = array())
     {
         $sth = $this->pdo->prepare($statement);

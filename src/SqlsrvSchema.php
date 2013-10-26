@@ -21,6 +21,24 @@ class SqlsrvSchema extends AbstractSchema
 {
     /**
      * 
+     * The quote prefix for identifier names.
+     * 
+     * @var string
+     * 
+     */
+    protected $quote_name_prefix = '[';
+    
+    /**
+     * 
+     * The quote suffix for identifier names.
+     * 
+     * @var string
+     * 
+     */
+    protected $quote_name_suffix = ']';
+    
+    /**
+     * 
      * Returns a list of all tables in the database.
      * 
      * @param string $schema Fetch tbe list of tables in this schema; 

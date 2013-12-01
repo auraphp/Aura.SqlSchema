@@ -49,6 +49,7 @@ Instantiate a driver-specific schema object with a matching
 
 ```php
 <?php
+use Aura\Sql_Schema\ColumnFactory;
 use Aura\Sql_Schema\MysqlSchema; // for MySQL
 use Aura\Sql_Schema\PgsqlSchema; // for PostgreSQL
 use Aura\Sql_Schema\SqliteSchema; // for Sqlite
@@ -56,8 +57,9 @@ use Aura\Sql_Schema\SqlsrvSchema; // for Microsoft SQL Server
 use PDO;
 
 $pdo = new PDO(...);
+$query_factory = new Aura\Sql_Schema\ColumnFactory();
 
-$schema = new MysqlSchema($pdo);
+$schema = new MysqlSchema($pdo, $query_factory);
 ?>
 ```
 

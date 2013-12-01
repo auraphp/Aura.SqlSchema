@@ -56,10 +56,14 @@ use Aura\Sql_Schema\SqliteSchema; // for Sqlite
 use Aura\Sql_Schema\SqlsrvSchema; // for Microsoft SQL Server
 use PDO;
 
+// a PDO connection
 $pdo = new PDO(...);
-$query_factory = new Aura\Sql_Schema\ColumnFactory();
 
-$schema = new MysqlSchema($pdo, $query_factory);
+// a column definition factory
+$column_factory = new ColumnFactory();
+
+// the schema discovery object
+$schema = new MysqlSchema($pdo, $column_factory);
 ?>
 ```
 

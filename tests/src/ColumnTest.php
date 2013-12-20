@@ -62,10 +62,20 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             $info['primary']
         );
         
-        eval('$actual = ' . var_export($col, true) . ';');
-        
-        foreach ($info as $key => $expect) {
-            $this->assertSame($expect, $actual->$key);
-        }
+        $actual = var_export($col, true);
+        $expect = <<<EXPECT
+Aura\Sql_Schema\Column::__set_state(array(
+   'name' => 'cost',
+   'type' => 'numeric',
+   'size' => 10,
+   'scale' => 2,
+   'notnull' => true,
+   'default' => NULL,
+   'autoinc' => false,
+   'primary' => false,
+))
+EXPECT;
+
+        $this->assertSame($expect, $actual);
     }
 }

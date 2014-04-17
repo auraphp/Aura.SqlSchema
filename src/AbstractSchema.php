@@ -123,7 +123,6 @@ abstract class AbstractSchema implements SchemaInterface
     protected function getTypeSizeScope($spec)
     {
         $spec  = strtolower($spec);
-        $type  = null;
         $size  = null;
         $scale = null;
 

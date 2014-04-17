@@ -70,7 +70,8 @@ class SqlsrvSchema extends AbstractSchema
      */
     public function fetchTableCols($spec)
     {
-        list($schema, $table) = $this->splitName($spec);
+        // no need for $schema yet
+        list(,$table) = $this->splitName($spec);
 
         // get column info
         $text = "exec sp_columns @table_name = " . $this->quoteName($table);

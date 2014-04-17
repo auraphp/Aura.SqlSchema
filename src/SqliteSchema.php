@@ -72,6 +72,16 @@ class SqliteSchema extends AbstractSchema
      */
     public function fetchTableCols($spec)
     {
+        list($schema, $table) = $this->getSchemaAndTable($spec);
+        $create = $this->getCreateTable($schema, $table);
+        $cols = array();
+        $this->setRawCols($cols, $schema, $table, $create);
+        $this->convertColsToObjects($cols, $create);
+        return $cols;
+    }
+
+    protected function getSchemaAndTable($spec)
+    {
         list($schema, $table) = $this->splitName($spec);
 
         // strip non-word characters to try and prevent SQL injections
@@ -83,98 +93,68 @@ class SqliteSchema extends AbstractSchema
             $schema = preg_replace('/[^\w]/', '', $schema) . '.';
         }
 
-        // where the description will be stored
-        $cols = array();
+        return array($schema, $table);
+    }
 
-        // get the CREATE TABLE sql; need this for finding autoincrement cols
+    protected function getCreateTable($schema, $table)
+    {
         $cmd = "
             SELECT sql FROM {$schema}sqlite_master
             WHERE type = 'table' AND name = :table
         ";
-        $create_table = $this->pdoFetchValue($cmd, array('table' => $table));
+        return $this->pdoFetchValue($cmd, array('table' => $table));
+    }
 
-        // get the column descriptions
+    protected function setRawCols(&$cols, $schema, $table, $create)
+    {
         $table = $this->quoteName($table);
         $raw_cols = $this->pdoFetchAll("PRAGMA {$schema}TABLE_INFO($table)");
-
-        // loop through the result rows; each describes a column.
         foreach ($raw_cols as $val) {
+            $this->addColFromRaw($cols, $val, $create);
+        }
+    }
 
-            $name = $val['name'];
-            list($type, $size, $scale) = $this->getTypeSizeScope($val['type']);
+    protected function addColFromRaw(&$cols, $val, $create)
+    {
+        $name = $val['name'];
+        list($type, $size, $scale) = $this->getTypeSizeScope($val['type']);
 
-            // find autoincrement column in CREATE TABLE sql.
-            $autoinc_find = str_replace(' ', '\s+', $this->autoinc_string);
-            $find = "(\"$name\"|\'$name\'|`$name`|\[$name\]|\\b$name)"
-                  . "\s+$autoinc_find";
+        // find autoincrement column in CREATE TABLE sql.
+        $autoinc_find = str_replace(' ', '\s+', $this->autoinc_string);
+        $find = "(\"$name\"|\'$name\'|`$name`|\[$name\]|\\b$name)"
+              . "\s+$autoinc_find";
 
-            $autoinc = preg_match(
-                "/$find/Ui",
-                $create_table,
-                $matches
-            );
+        $autoinc = preg_match(
+            "/$find/Ui",
+            $create,
+            $matches
+        );
 
-            $default = null;
-            if ($val['dflt_value'] && $val['dflt_value'] != 'NULL') {
-                $default = trim($val['dflt_value'], "'");
-            }
-
-            $cols[$name] = array(
-                'name'    => $name,
-                'type'    => $type,
-                'size'    => ($size  ? (int) $size  : null),
-                'scale'   => ($scale ? (int) $scale : null),
-                'default' => $default,
-                'notnull' => (bool) ($val['notnull']),
-                'primary' => (bool) ($val['pk'] == 1),
-                'autoinc' => (bool) $autoinc,
-            );
+        $default = null;
+        if ($val['dflt_value'] && $val['dflt_value'] != 'NULL') {
+            $default = trim($val['dflt_value'], "'");
         }
 
-        // For defaults using keywords, SQLite always reports the keyword
-        // *value*, not the keyword itself (e.g., '2007-03-07' instead of
-        // 'CURRENT_DATE').
-        //
-        // The allowed keywords are CURRENT_DATE, CURRENT_TIME, and
-        // CURRENT_TIMESTAMP.
-        //
-        //   <http://www.sqlite.org/lang_createtable.html>
-        //
-        // Check the table-creation SQL for the default value to see if it's
-        // a keyword and report 'null' in those cases.
+        $cols[$name] = array(
+            'name'    => $name,
+            'type'    => $type,
+            'size'    => ($size  ? (int) $size  : null),
+            'scale'   => ($scale ? (int) $scale : null),
+            'default' => $default,
+            'notnull' => (bool) ($val['notnull']),
+            'primary' => (bool) ($val['pk'] == 1),
+            'autoinc' => (bool) $autoinc,
+        );
+    }
 
-        // get the list of column names
+    protected function convertColsToObjects(&$cols, $create)
+    {
         $names = array_keys($cols);
-
-        // how many are there?
         $last = count($names) - 1;
 
         // loop through each column and find out if its default is a keyword
         foreach ($names as $curr => $name) {
-
-            // if there is a default value ...
-            if ($cols[$name]['default']) {
-
-                // look for :curr_col :curr_type . DEFAULT CURRENT_(*)
-                $find = $cols[$name]['name'] . '\s+'
-                      . $cols[$name]['type']
-                      . '.*\s+DEFAULT\s+CURRENT_';
-
-                // if not at the end, don't look further than the next coldef
-                if ($curr < $last) {
-                    $next = $names[$curr + 1];
-                    $find .= '.*' . $cols[$next]['name'] . '\s+'
-                           . $cols[$next]['type'];
-                }
-
-                // is the default a keyword?
-                preg_match("/$find/ims", $create_table, $matches);
-                if (! empty($matches)) {
-                    $cols[$name]['default'] = null;
-                }
-            }
-
-            // convert to a column object
+            $this->setColumnDefault($cols, $name, $curr, $last, $names, $create);
             $cols[$name] = $this->column_factory->newInstance(
                 $cols[$name]['name'],
                 $cols[$name]['type'],
@@ -186,8 +166,43 @@ class SqliteSchema extends AbstractSchema
                 $cols[$name]['primary']
             );
         }
+    }
 
-        // done!
-        return $cols;
+    protected function setColumnDefault(&$cols, $name, $curr, $last, $names, $create)
+    {
+        // For defaults using keywords, SQLite always reports the keyword
+        // *value*, not the keyword itself (e.g., '2007-03-07' instead of
+        // 'CURRENT_DATE').
+        //
+        // The allowed keywords are CURRENT_DATE, CURRENT_TIME, and
+        // CURRENT_TIMESTAMP.
+        //
+        //   <http://www.sqlite.org/lang_createtable.html>
+        //
+        // Check the table-creation SQL for the default value to see if it's
+        // a keyword and report 'null' in those cases.
+        // get the list of column names
+
+        if (! $cols[$name]['default']) {
+            return;
+        }
+
+        // look for :curr_col :curr_type . DEFAULT CURRENT_(*)
+        $find = $cols[$name]['name'] . '\s+'
+              . $cols[$name]['type']
+              . '.*\s+DEFAULT\s+CURRENT_';
+
+        // if not at the end, don't look further than the next coldef
+        if ($curr < $last) {
+            $next = $names[$curr + 1];
+            $find .= '.*' . $cols[$next]['name'] . '\s+'
+                   . $cols[$next]['type'];
+        }
+
+        // is the default a keyword?
+        preg_match("/$find/ims", $create, $matches);
+        if (! empty($matches)) {
+            $cols[$name]['default'] = null;
+        }
     }
 }

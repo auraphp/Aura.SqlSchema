@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Sql_Schema;
+namespace Aura\SqlSchema;
 
 abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
 {
@@ -35,7 +35,7 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
         }
         
         // database setup
-        $setup_class = 'Aura\Sql_Schema\Setup\\' . ucfirst($this->pdo_type) . 'Setup';
+        $setup_class = 'Aura\SqlSchema\Setup\\' . ucfirst($this->pdo_type) . 'Setup';
         $this->setup = new $setup_class;
         
         // schema class same as this class, minus "Test"
@@ -49,7 +49,7 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
     public function testGetColumnFactory()
     {
         $actual = $this->schema->getColumnFactory();
-        $this->assertInstanceOf('\Aura\Sql_Schema\ColumnFactory', $actual);
+        $this->assertInstanceOf('\Aura\SqlSchema\ColumnFactory', $actual);
     }
     
     public function testFetchTableList()

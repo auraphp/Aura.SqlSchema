@@ -1,4 +1,4 @@
-# Aura.Sql_Schema
+# Aura.SqlSchema
 
 Provides facilities to read table names and table columns from a database
 using a [PDO](http://php.net/PDO) connection.
@@ -11,13 +11,13 @@ This library requires PHP 5.3 or later, and has no userland dependencies.
 
 It is installable and autoloadable via Composer as [aura/sql-schema](https://packagist.org/packages/aura/sql-schema).
 
-Alternatively, [download a release](https://github.com/auraphp/Aura.Sql_Schema/releases) or clone this repository, then require or include its _autoload.php_ file.
+Alternatively, [download a release](https://github.com/auraphp/Aura.SqlSchema/releases) or clone this repository, then require or include its _autoload.php_ file.
 
 ### Quality
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.Sql_Schema/badges/quality-score.png?s=be864bf540941609bb6c0c9e3e3174713c50e40c)](https://scrutinizer-ci.com/g/auraphp/Aura.Sql_Schema/)
-[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.Sql_Schema/badges/coverage.png?s=da9f410c4021d9ef457f6d48cf8f5a8713365a81)](https://scrutinizer-ci.com/g/auraphp/Aura.Sql_Schema/)
-[![Build Status](https://travis-ci.org/auraphp/Aura.Sql_Schema.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.Sql_Schema)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/quality-score.png?s=be864bf540941609bb6c0c9e3e3174713c50e40c)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
+[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/coverage.png?s=da9f410c4021d9ef457f6d48cf8f5a8713365a81)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
+[![Build Status](https://travis-ci.org/auraphp/Aura.SqlSchema.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.SqlSchema)
 
 To run the [PHPUnit][] tests at the command line, go to the _tests_ directory and issue `phpunit`.
 
@@ -43,11 +43,11 @@ Instantiate a driver-specific schema object with a matching
 
 ```php
 <?php
-use Aura\Sql_Schema\ColumnFactory;
-use Aura\Sql_Schema\MysqlSchema; // for MySQL
-use Aura\Sql_Schema\PgsqlSchema; // for PostgreSQL
-use Aura\Sql_Schema\SqliteSchema; // for Sqlite
-use Aura\Sql_Schema\SqlsrvSchema; // for Microsoft SQL Server
+use Aura\SqlSchema\ColumnFactory;
+use Aura\SqlSchema\MysqlSchema; // for MySQL
+use Aura\SqlSchema\PgsqlSchema; // for PostgreSQL
+use Aura\SqlSchema\SqliteSchema; // for Sqlite
+use Aura\SqlSchema\SqlsrvSchema; // for Microsoft SQL Server
 use PDO;
 
 // a PDO connection

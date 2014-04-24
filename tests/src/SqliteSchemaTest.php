@@ -1,5 +1,5 @@
 <?php
-namespace Aura\Sql_Schema;
+namespace Aura\SqlSchema;
 
 class SqliteSchemaTest extends AbstractSchemaTest
 {

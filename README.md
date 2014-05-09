@@ -15,8 +15,8 @@ Alternatively, [download a release](https://github.com/auraphp/Aura.SqlSchema/re
 
 ### Quality
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/quality-score.png?s=be864bf540941609bb6c0c9e3e3174713c50e40c)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
-[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/coverage.png?s=da9f410c4021d9ef457f6d48cf8f5a8713365a81)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/quality-score.png?s=5a2ef76c8dc40c492ac99c5adb761d1a496962bf)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
+[![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/coverage.png?s=437a9bf4130822433f87a40ce27c850fa67c211d)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
 [![Build Status](https://travis-ci.org/auraphp/Aura.SqlSchema.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.SqlSchema)
 
 To run the [PHPUnit][] tests at the command line, go to the _tests_ directory and issue `phpunit`.

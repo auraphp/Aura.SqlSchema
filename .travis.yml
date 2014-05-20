@@ -3,6 +3,7 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - hhvm
 before_script:
   - "mysql -e 'DROP DATABASE IF EXISTS test;'"
   - "mysql -e 'create database test;'"
@@ -10,3 +11,6 @@ before_script:
   - "psql -c 'create database test;' -U postgres"
   - cd tests
 script: phpunit
+matrix:
+  allow_failures:
+    - php: hhvm

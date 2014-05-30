@@ -4,13 +4,13 @@ namespace Aura\SqlSchema;
 class SqliteSchemaTest extends AbstractSchemaTest
 {
     protected $extension = 'pdo_sqlite';
-    
+
     protected $pdo_type = 'sqlite';
-    
+
     protected $expect_fetch_table_list = array('aura_test_table', 'sqlite_sequence');
-    
+
     protected $expect_fetch_table_list_schema = array('aura_test_table', 'sqlite_sequence');
-    
+
     protected $expect_fetch_table_cols = array(
         'id' => array(
             'name' => 'id',

@@ -1,108 +1,108 @@
 <?php
 /**
- * 
+ *
  * This file is part of Aura for PHP.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
- * 
+ *
  */
 namespace Aura\SqlSchema;
 
 use PDO;
 
 /**
- * 
+ *
  * Abstract schema discovery tools.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  */
 abstract class AbstractSchema implements SchemaInterface
 {
     /**
-     * 
+     *
      * The quote prefix for identifier names.
-     * 
+     *
      * @var string
-     * 
+     *
      */
     protected $quote_name_prefix = '`';
-    
+
     /**
-     * 
+     *
      * The quote suffix for identifier names.
-     * 
+     *
      * @var string
-     * 
+     *
      */
     protected $quote_name_suffix = '`';
-    
+
     /**
-     * 
+     *
      * A ColumnFactory for returning column information.
-     * 
+     *
      * @var ColumnFactory
-     * 
+     *
      */
     protected $column_factory;
 
     /**
-     * 
+     *
      * A Pdo connection.
-     * 
+     *
      * @var PDO
-     * 
+     *
      */
     protected $pdo;
-    
+
     /**
-     * 
+     *
      * Constructor.
-     * 
+     *
      * @param PDO $pdo A database connection.
-     * 
+     *
      * @param ColumnFactory $column_factory A column object factory.
-     * 
+     *
      */
     public function __construct(PDO $pdo, ColumnFactory $column_factory)
     {
         $this->pdo = $pdo;
         $this->column_factory = $column_factory;
     }
-    
+
     /**
-     * 
+     *
      * Returns a list of tables in the database.
-     * 
+     *
      * @param string $schema Optionally, pass a schema name to get the list
      * of tables in this schema.
-     * 
+     *
      * @return array The list of tables in the database.
-     * 
+     *
      */
     abstract public function fetchTableList($schema = null);
 
     /**
-     * 
+     *
      * Returns an array of columns in a table.
-     * 
+     *
      * @param string $spec Return the columns in this table. This may be just
      * a `table` name, or a `schema.table` name.
-     * 
+     *
      * @return array An associative array where the key is the column name
      * and the value is a Column object.
-     * 
+     *
      */
     abstract public function fetchTableCols($spec);
 
     /**
-     * 
+     *
      * Returns the column factory object.
-     * 
+     *
      * @return ColumnFactory
-     * 
+     *
      */
     public function getColumnFactory()
     {
@@ -110,15 +110,15 @@ abstract class AbstractSchema implements SchemaInterface
     }
 
     /**
-     * 
-     * Given a column specification, parse into datatype, size, and 
+     *
+     * Given a column specification, parse into datatype, size, and
      * decimal scale.
-     * 
+     *
      * @param string $spec The column specification; for example,
      * "VARCHAR(255)" or "NUMERIC(10,2)".
-     * 
+     *
      * @return array A sequential array of the column type, size, and scale.
-     * 
+     *
      */
     protected function getTypeSizeScope($spec)
     {
@@ -151,16 +151,16 @@ abstract class AbstractSchema implements SchemaInterface
     }
 
     /**
-     * 
+     *
      * Splits an identifier name into two parts, based on the location of the
      * first dot.
-     * 
+     *
      * @param string $name The identifier name to be split.
-     * 
+     *
      * @return array An array of two elements; element 0 is the parts before
      * the dot, and element 1 is the part after the dot. If there was no dot,
      * element 0 will be null and element 1 will be the name as given.
-     * 
+     *
      */
     protected function splitName($name)
     {
@@ -173,25 +173,25 @@ abstract class AbstractSchema implements SchemaInterface
     }
 
     /**
-     * 
-     * Quotes a single identifier name (table, table alias, table column, 
+     *
+     * Quotes a single identifier name (table, table alias, table column,
      * index, sequence).
-     * 
+     *
      * If the name contains `' AS '`, this method will separately quote the
      * parts before and after the `' AS '`.
-     * 
+     *
      * If the name contains a space, this method will separately quote the
      * parts before and after the space.
-     * 
+     *
      * If the name contains a dot, this method will separately quote the
      * parts before and after the dot.
-     * 
+     *
      * @param string $name The identifier name to quote.
-     * 
+     *
      * @return string|array The quoted identifier name.
-     * 
+     *
      * @see replaceName()
-     * 
+     *
      */
     public function quoteName($name)
     {
@@ -209,17 +209,17 @@ abstract class AbstractSchema implements SchemaInterface
         // "name"
         return $this->quote_name_prefix . $name . $this->quote_name_suffix;
     }
-    
+
     /**
-     * 
+     *
      * Fetch all result rows.
-     * 
+     *
      * @param string $statement The SQL statement.
-     * 
+     *
      * @param array $values Values to bind to the SQL statement.
-     * 
+     *
      * @return array
-     * 
+     *
      */
     protected function pdoFetchAll($statement, array $values = array())
     {
@@ -227,17 +227,17 @@ abstract class AbstractSchema implements SchemaInterface
         $sth->execute($values);
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     /**
-     * 
+     *
      * Fetch the first column of all result rows.
-     * 
+     *
      * @param string $statement The SQL statement.
-     * 
+     *
      * @param array $values Values to bind to the SQL statement.
-     * 
+     *
      * @return array
-     * 
+     *
      */
     protected function pdoFetchCol($statement, array $values = array())
     {
@@ -245,17 +245,17 @@ abstract class AbstractSchema implements SchemaInterface
         $sth->execute($values);
         return $sth->fetchAll(PDO::FETCH_COLUMN, 0);
     }
-    
+
     /**
-     * 
+     *
      * Fetch the first column of the first row.
-     * 
+     *
      * @param string $statement The SQL statement.
-     * 
+     *
      * @param array $values Values to bind to the SQL statement.
-     * 
+     *
      * @return mixed
-     * 
+     *
      */
     protected function pdoFetchValue($statement, array $values = array())
     {

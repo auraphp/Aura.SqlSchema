@@ -4,16 +4,16 @@ namespace Aura\SqlSchema;
 class PgsqlSchemaTest extends AbstractSchemaTest
 {
     protected $extension = 'pdo_pgsql';
-    
+
     protected $pdo_type = 'pgsql';
-    
+
     protected $expect_fetch_table_list = array(
         'aura_test_schema1.aura_test_table',
         'aura_test_schema2.aura_test_table'
     );
-    
+
     protected $expect_fetch_table_list_schema = array('aura_test_table');
-    
+
     protected $expect_fetch_table_cols = array(
         'id' => array(
             'name' => 'id',

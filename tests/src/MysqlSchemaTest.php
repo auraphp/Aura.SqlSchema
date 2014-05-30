@@ -4,13 +4,13 @@ namespace Aura\SqlSchema;
 class MysqlSchemaTest extends AbstractSchemaTest
 {
     protected $extension = 'pdo_mysql';
-    
+
     protected $pdo_type = 'mysql';
-    
+
     protected $expect_fetch_table_list = array('aura_test_table');
-    
+
     protected $expect_fetch_table_list_schema = array('aura_test_table');
-    
+
     protected $expect_fetch_table_cols = array(
         'id' => array(
             'name' => 'id',

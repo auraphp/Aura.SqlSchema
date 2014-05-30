@@ -12,18 +12,18 @@ class PgsqlSetup extends AbstractSetup
         ,test_default_number    NUMERIC(5) DEFAULT 12345
         ,test_default_ignore    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
-    
+
     protected function createSchemas()
     {
         $this->pdo->query("CREATE SCHEMA aura_test_schema1");
         $this->pdo->query("CREATE SCHEMA aura_test_schema2");
         $this->pdo->query("SET search_path TO aura_test_schema1");
     }
-    
+
     protected function dropSchemas()
     {
         $this->pdo->query("DROP SCHEMA IF EXISTS aura_test_schema1 CASCADE");
         $this->pdo->query("DROP SCHEMA IF EXISTS aura_test_schema2 CASCADE");
     }
-    
+
 }

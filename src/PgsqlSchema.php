@@ -1,33 +1,33 @@
 <?php
 /**
- * 
+ *
  * This file is part of Aura for PHP.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
- * 
+ *
  */
 namespace Aura\SqlSchema;
 
 /**
- * 
+ *
  * PostgreSQL schema discovery tools.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  */
 class PgsqlSchema extends AbstractSchema
 {
     /**
-     * 
+     *
      * Returns a list of all tables in the database.
-     * 
-     * @param string $schema Fetch tbe list of tables in this schema; 
+     *
+     * @param string $schema Fetch tbe list of tables in this schema;
      * when empty, uses the default schema.
-     * 
+     *
      * @return array All table names in the database.
-     * 
+     *
      */
     public function fetchTableList($schema = null)
     {
@@ -52,15 +52,15 @@ class PgsqlSchema extends AbstractSchema
     }
 
     /**
-     * 
+     *
      * Returns an array of columns in a table.
-     * 
+     *
      * @param string $spec Return the columns in this table. This may be just
      * a `table` name, or a `schema.table` name.
-     * 
+     *
      * @return array An associative array where the key is the column name
      * and the value is a Column object.
-     * 
+     *
      */
     public function fetchTableCols($spec)
     {
@@ -86,7 +86,7 @@ class PgsqlSchema extends AbstractSchema
         ";
 
         $bind_values = array('table' => $table);
-        
+
         if ($schema) {
             $cmd .= " AND n.nspname = :schema";
             $bind_values['schema'] = $schema;
@@ -121,16 +121,16 @@ class PgsqlSchema extends AbstractSchema
     }
 
     /**
-     * 
+     *
      * Given a native column SQL default value, finds a PHP literal value.
-     * 
+     *
      * SQL NULLs are converted to PHP nulls.  Non-literal values (such as
      * keywords and functions) are also returned as null.
-     * 
+     *
      * @param string $default The column default SQL value.
-     * 
+     *
      * @return scalar A literal PHP value.
-     * 
+     *
      */
     protected function getDefault($default)
     {

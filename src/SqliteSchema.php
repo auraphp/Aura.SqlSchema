@@ -1,44 +1,44 @@
 <?php
 /**
- * 
+ *
  * This file is part of Aura for PHP.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  * @license http://opensource.org/licenses/bsd-license.php BSD
- * 
+ *
  */
 namespace Aura\SqlSchema;
 
 /**
- * 
+ *
  * SQLite schema discovery tools.
- * 
+ *
  * @package Aura.SqlSchema
- * 
+ *
  */
 class SqliteSchema extends AbstractSchema
 {
     /**
-     * 
+     *
      * The string used for SQLite autoincrement data types.
-     * 
+     *
      * This is SQLite version 3; version 2 is different.
-     * 
+     *
      * @var string
-     * 
+     *
      */
     protected $autoinc_string = 'INTEGER PRIMARY KEY AUTOINCREMENT';
 
     /**
-     * 
+     *
      * Returns a list of tables in the database.
-     * 
+     *
      * @param string $schema Optionally, pass a schema name to get the list
      * of tables in this schema.
-     * 
+     *
      * @return array The list of tables in the database.
-     * 
+     *
      */
     public function fetchTableList($schema = null)
     {
@@ -60,15 +60,15 @@ class SqliteSchema extends AbstractSchema
     }
 
     /**
-     * 
+     *
      * Describes the columns in a table.
-     * 
+     *
      * @param string $spec Return the columns in this table. This may be just
      * a `table` name, or a `schema.table` name.
-     * 
+     *
      * @return array An associative array where the key is the column name
      * and the value is a Column object.
-     * 
+     *
      */
     public function fetchTableCols($spec)
     {

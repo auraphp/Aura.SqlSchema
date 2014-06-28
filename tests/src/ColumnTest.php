@@ -75,6 +75,9 @@ Aura\SqlSchema\Column::__set_state(array(
    'primary' => false,
 ))
 EXPECT;
+        if (defined('HHVM_VERSION')) {
+          $expect = str_replace('   ', '  ', $expect);
+        }
 
         $this->assertSame($expect, $actual);
     }

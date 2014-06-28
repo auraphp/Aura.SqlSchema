@@ -62,7 +62,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             $info['primary']
         );
 
-        $actual = var_export($col, true);
+        $actual = unserialize(var_export(serialize($col), true));
         $expect = <<<EXPECT
 Aura\SqlSchema\Column::__set_state(array(
    'name' => 'cost',

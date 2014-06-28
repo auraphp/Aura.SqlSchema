@@ -15,7 +15,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'autoinc' => false,
             'primary' => false,
         );
-        
+
         $col = new Column(
             $info['name'],
             $info['type'],
@@ -26,18 +26,18 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             $info['autoinc'],
             $info['primary']
         );
-        
+
         foreach ($info as $key => $expect) {
             $this->assertTrue(isset($col->$key));
             $this->assertSame($expect, $col->$key);
         }
     }
-    
+
     public function test__isset()
     {
-        
+
     }
-    
+
     public function test__set_state()
     {
         $info = array(
@@ -50,7 +50,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             'autoinc' => false,
             'primary' => false,
         );
-        
+
         $col = new Column(
             $info['name'],
             $info['type'],
@@ -61,7 +61,7 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             $info['autoinc'],
             $info['primary']
         );
-        
+
         $actual = var_export($col, true);
         $expect = <<<EXPECT
 Aura\SqlSchema\Column::__set_state(array(
@@ -75,6 +75,9 @@ Aura\SqlSchema\Column::__set_state(array(
    'primary' => false,
 ))
 EXPECT;
+        if (defined('HHVM_VERSION')) {
+          $expect = str_replace('   ', '  ', $expect);
+        }
 
         $this->assertSame($expect, $actual);
     }

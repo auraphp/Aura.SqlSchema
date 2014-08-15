@@ -15,6 +15,15 @@ namespace Aura\SqlSchema;
  * Represents one column from a table.
  *
  * @package Aura.SqlSchema
+ * 
+ * @property-read string      $name    the column name
+ * @property-read string      $type    the column data type, as reported by the database
+ * @property-read int|null    $size    the column size (if defined)
+ * @property-read int|null    $scale   the number of decimal places for the column (if defined)
+ * @property-read bool        $notnull true, if this column rejects NULL values (a NOT NULL constraint is present)
+ * @property-read string|null $default the default value for the column (if defined)
+ * @property-read bool        $autoinc true, if the value of this column will auto-increment on INSERT
+ * @property-read bool        $primary true, if this column is (or is part of) the primary key
  *
  */
 class Column

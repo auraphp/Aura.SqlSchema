@@ -41,6 +41,8 @@ class ColumnFactory
      *
      * @param bool $primary Is the column part of the primary key?
      *
+     * @return Column
+     *
      */
     public function newInstance(
         $name,

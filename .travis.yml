@@ -3,11 +3,18 @@ php:
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
   - hhvm-nightly
 before_script:
   - "mysql -e 'DROP DATABASE IF EXISTS test;'"
   - "mysql -e 'create database test;'"
   - "psql -c 'DROP DATABASE IF EXISTS test;' -U postgres"
   - "psql -c 'create database test;' -U postgres"
-  - cd tests
-script: phpunit
+script:
+  - phpunit -c tests/ --coverage-clover=coverage.clover
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+notifications:
+  - email: true
+  - irc: "irc.freenode.org#auraphp"

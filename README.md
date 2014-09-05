@@ -19,7 +19,7 @@ Alternatively, [download a release](https://github.com/auraphp/Aura.SqlSchema/re
 [![Code Coverage](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/badges/coverage.png?b=develop-2)](https://scrutinizer-ci.com/g/auraphp/Aura.SqlSchema/)
 [![Build Status](https://travis-ci.org/auraphp/Aura.SqlSchema.png?branch=develop-2)](https://travis-ci.org/auraphp/Aura.SqlSchema)
 
-To run the unit tests at the command line, go to the _tests/unit_ directory and issue `./phpunit.sh`. (This requires [PHPUnit][] to be available as `phpunit`.)
+To run the unit tests at the command line, issue `phpunit -c tests/unit/`. (This requires [PHPUnit][] to be available as `phpunit`.)
 
 [PHPUnit]: http://phpunit.de/manual/
 

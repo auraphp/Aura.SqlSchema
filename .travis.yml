@@ -10,9 +10,8 @@ before_script:
   - "mysql -e 'create database test;'"
   - "psql -c 'DROP DATABASE IF EXISTS test;' -U postgres"
   - "psql -c 'create database test;' -U postgres"
-  - cd tests/unit
 script:
-  - ./phpunit.sh --coverage-clover=coverage.clover
+  - phpunit -c tests/unit/ --coverage-clover=coverage.clover
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

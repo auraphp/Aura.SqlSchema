@@ -26,7 +26,7 @@ class PgsqlSchema extends AbstractSchema
      * @param string $schema Fetch tbe list of tables in this schema;
      * when empty, uses the default schema.
      *
-     * @return array All table names in the database.
+     * @return string[] All table names in the database.
      *
      */
     public function fetchTableList($schema = null)
@@ -58,7 +58,7 @@ class PgsqlSchema extends AbstractSchema
      * @param string $spec Return the columns in this table. This may be just
      * a `table` name, or a `schema.table` name.
      *
-     * @return array An associative array where the key is the column name
+     * @return Column[] An associative array where the key is the column name
      * and the value is a Column object.
      *
      */

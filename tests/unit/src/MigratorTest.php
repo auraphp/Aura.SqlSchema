@@ -24,7 +24,6 @@ class MigratorTest extends \PHPUnit_Framework_TestCase
             function () use ($pdo) { return new Migration\V001($pdo); },
             function () use ($pdo) { return new Migration\V002($pdo); },
             function () use ($pdo) { return new Migration\V003($pdo); },
-            function () use ($pdo) { return new Migration\V004($pdo); },
         );
 
         $migration_locator = new MigrationLocator($factories);
@@ -121,13 +120,14 @@ class MigratorTest extends \PHPUnit_Framework_TestCase
             $this->migrator->up(4);
             $this->fail('Should have thrown exception.');
         } catch (Exception $e) {
+            $this->assertSame('Migration 4 not found.', $e->getMessage());
             $expect = array (
                 'Migrating up from 0 to 4.',
                 'Migrated up to 1.',
                 'Migrated up to 2.',
                 'Migrated up to 3.',
-                'Failed to migrate up to 4.',
-                'Prior migrations rolled back.',
+                'Migration up from 0 to 4 failed.',
+                'Rolled back to version 0.',
             );
             $this->assertSame($expect, $this->output);
         }

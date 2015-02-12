@@ -65,10 +65,17 @@ class Migrator
         $this->beginTransaction();
         $this->output("Migrating {$direction} from {$from} to {$to}.");
         $method = 'applyMigrations' . ucfirst($direction);
-        $this->$method($from, $to);
-        $this->updateVersion($to);
-        $this->commit();
-        $this->output("Migration {$direction} from {$from} to {$to} committed!");
+        try {
+            $this->$method($from, $to);
+            $this->updateVersion($to);
+            $this->commit();
+            $this->output("Migration {$direction} from {$from} to {$to} committed!");
+        } catch (Exception $e) {
+            $this->rollBack();
+            $this->output("Migration {$direction} from {$from} to {$to} failed.");
+            $this->output("Rolled back to version {$from}.");
+            throw $e;
+        }
     }
 
     protected function applyMigrationsUp($from, $to)
@@ -89,15 +96,8 @@ class Migrator
 
     protected function applyMigration(MigrationInterface $migration, $direction, $preposition, $version)
     {
-        try {
-            call_user_func(array($migration, $direction));
-            $this->output("Migrated {$direction} {$preposition} {$version}.");
-        } catch (Exception $e) {
-            $this->rollBack();
-            $this->output("Failed to migrate {$direction} {$preposition} {$version}.");
-            $this->output("Prior migrations rolled back.");
-            throw $e;
-        }
+        call_user_func(array($migration, $direction));
+        $this->output("Migrated {$direction} {$preposition} {$version}.");
     }
 
     protected function output($str)

@@ -16,22 +16,17 @@ class MigrationLocator
 
     public function get($version)
     {
-        $version -= 1;
+        $key = $version - 1;
 
-        if (! isset($this->factories[$version])) {
+        if (! isset($this->factories[$key])) {
             throw new Exception("Migration {$version} not found.");
         }
 
-        if (! isset($this->instances[$version])) {
-            $factory = $this->factories[$version];
-            $this->instances[$version] = $factory();
+        if (! isset($this->instances[$key])) {
+            $factory = $this->factories[$key];
+            $this->instances[$key] = $factory();
         }
 
-        return $this->instances[$version];
-    }
-
-    public function getLatestVersion()
-    {
-        return count($factories);
+        return $this->instances[$key];
     }
 }

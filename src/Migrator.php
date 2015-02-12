@@ -27,7 +27,7 @@ class Migrator
 
         $errmode = $this->pdo->getAttribute(PDO::ATTR_ERRMODE);
         if ($errmode != PDO::ERRMODE_EXCEPTION) {
-            throw new Exception("PDO must be use ERRMODE_EXCEPTION for migrations.");
+            throw new Exception('PDO must be use ERRMODE_EXCEPTION for migrations.');
         }
 
         $this->migration_locator = $migration_locator;
@@ -53,7 +53,7 @@ class Migrator
         $from = $this->fetchVersion();
         $to = $this->toVersion($to, $from, -1);
         if ($from <= $to) {
-            $message = "Cannot migrate up down to version {$to} "
+            $message = "Cannot migrate down to version {$to} "
                 . "when already at or below it ({$from}).";
             throw new Exception($message);
         }
@@ -93,8 +93,9 @@ class Migrator
             call_user_func(array($migration, $direction));
             $this->output("Migrated {$direction} {$preposition} {$version}.");
         } catch (Exception $e) {
-            $this->pdo->rollBack();
+            $this->rollBack();
             $this->output("Failed to migrate {$direction} {$preposition} {$version}.");
+            $this->output("Prior migrations rolled back.");
             throw $e;
         }
     }

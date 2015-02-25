@@ -1,7 +1,6 @@
 <?php
 namespace Aura\SqlSchema;
 
-use Exception;
 use PDO;
 
 class Migrator
@@ -27,7 +26,7 @@ class Migrator
 
         $errmode = $this->pdo->getAttribute(PDO::ATTR_ERRMODE);
         if ($errmode != PDO::ERRMODE_EXCEPTION) {
-            throw new Exception('PDO must be use ERRMODE_EXCEPTION for migrations.');
+            throw new Exception('PDO must use ERRMODE_EXCEPTION for migrations.');
         }
 
         $this->migration_locator = $migration_locator;
@@ -41,11 +40,11 @@ class Migrator
         $from = $this->fetchVersion();
         $to = $this->toVersion($to, $from, +1);
         if ($from >= $to) {
-            $message = "Cannot migrate up to version {$to} "
-                . "when already at or above it ({$from}).";
-            throw new Exception($message);
+            $message = "Currently at version {$from}, so cannot migrate up to version {$to}.";
+            $this->output($message);
+            return 1;
         }
-        $this->applyMigrations('up', $from, $to);
+        return $this->applyMigrations('up', $from, $to);
     }
 
     public function down($to = null)
@@ -55,9 +54,10 @@ class Migrator
         if ($from <= $to) {
             $message = "Cannot migrate down to version {$to} "
                 . "when already at or below it ({$from}).";
-            throw new Exception($message);
+            $this->output($message);
+            return 1;
         }
-        $this->applyMigrations('down', $from, $to);
+        return $this->applyMigrations('down', $from, $to);
     }
 
     protected function applyMigrations($direction, $from, $to)
@@ -70,34 +70,49 @@ class Migrator
             $this->updateVersion($to);
             $this->commit();
             $this->output("Migration {$direction} from {$from} to {$to} committed!");
+            return 0;
         } catch (Exception $e) {
             $this->rollBack();
             $this->output("Migration {$direction} from {$from} to {$to} failed.");
+            $this->output($e->__toString());
             $this->output("Rolled back to version {$from}.");
-            throw $e;
+            return 1;
         }
     }
 
     protected function applyMigrationsUp($from, $to)
     {
         for ($version = $from + 1; $version <= $to; $version += 1) {
-            $migration = $this->migration_locator->get($version);
-            $this->applyMigration($migration, 'up', 'to', $version);
+            $this->applyMigration('up', 'to', $version);
         }
     }
 
     public function applyMigrationsDown($from, $to)
     {
         for ($version = $from; $version > $to; $version -= 1) {
-            $migration = $this->migration_locator->get($version);
-            $this->applyMigration($migration, 'down', 'from', $version);
+            $this->applyMigration('down', 'from', $version);
         }
     }
 
-    protected function applyMigration(MigrationInterface $migration, $direction, $preposition, $version)
-    {
+    protected function applyMigration(
+        $direction,
+        $to_from,
+        $version
+    ) {
+        $migration = $this->getMigration($version);
         call_user_func(array($migration, $direction));
-        $this->output("Migrated {$direction} {$preposition} {$version}.");
+        $this->output("Migrated {$direction} {$to_from} {$version}.");
+    }
+
+    protected function getMigration($version)
+    {
+        $migration = $this->migration_locator->get($version);
+        if (! $migration instanceof MigrationInterface) {
+            $message = get_class($migration) . ' does not implement '
+                     . '\\Aura\SqlSchema\\MigrationInterface.';
+            throw new Exception($message);
+        }
+        return $migration;
     }
 
     protected function output($str)
@@ -123,7 +138,6 @@ class Migrator
 
     protected function updateVersion($version)
     {
-        // fails if table not created, or if no row in there
         $stm = "UPDATE {$this->table} SET {$this->col} = {$version}";
         $sth = $this->pdo->prepare($stm);
         $sth->execute();

@@ -62,7 +62,7 @@ $schema = new MysqlSchema($pdo, $column_factory);
 ?>
 ```
 
-### Retrieving Schema Information
+### Fetching Table Lists
 
 To get a list of tables in the database, issue `fetchTableList()`:
 
@@ -74,6 +74,8 @@ foreach ($tables as $table) {
 }
 ?>
 ```
+
+### Fetching Column Information
 
 To get information about the columns in a table, issue `fetchTableCols()`:
 

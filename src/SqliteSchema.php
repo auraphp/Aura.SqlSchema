@@ -3,8 +3,6 @@
  *
  * This file is part of Aura for PHP.
  *
- * @package Aura.SqlSchema
- *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -23,7 +21,7 @@ class SqliteSchema extends AbstractSchema
      *
      * The string used for SQLite autoincrement data types.
      *
-     * This is SQLite version 3; version 2 is different.
+     * This is for SQLite version 3; version 2 is different.
      *
      * @var string
      *
@@ -80,6 +78,15 @@ class SqliteSchema extends AbstractSchema
         return $cols;
     }
 
+    /**
+     *
+     * Splits an identifier into schema and table.
+     *
+     * @param string $spec The identifier.
+     *
+     * @return array A 2-element array of schema and table.
+     *
+     */
     protected function getSchemaAndTable($spec)
     {
         list($schema, $table) = $this->splitName($spec);
@@ -96,6 +103,17 @@ class SqliteSchema extends AbstractSchema
         return array($schema, $table);
     }
 
+    /**
+     *
+     * Gets the SQL used to create a table.
+     *
+     * @param string $schema The schema in which the table was created.
+     *
+     * @param string $table The table name.
+     *
+     * @return string The SQL used to create the table.
+     *
+     */
     protected function getCreateTable($schema, $table)
     {
         $cmd = "
@@ -105,6 +123,21 @@ class SqliteSchema extends AbstractSchema
         return $this->pdoFetchValue($cmd, array('table' => $table));
     }
 
+    /**
+     *
+     * Sets the raw column info.
+     *
+     * @param array $cols The column info.
+     *
+     * @param string $schema The schema in which the table was created.
+     *
+     * @param string $table The table name.
+     *
+     * @param string $create The SQL used to create the table.
+     *
+     * @return null
+     *
+     */
     protected function setRawCols(&$cols, $schema, $table, $create)
     {
         $table = $this->quoteName($table);
@@ -114,6 +147,19 @@ class SqliteSchema extends AbstractSchema
         }
     }
 
+    /**
+     *
+     * Adds one raw column info element.
+     *
+     * @param array $cols The column info.
+     *
+     * @param array $val The raw column values.
+     *
+     * @param string $create The SQL used to create the table.
+     *
+     * @return null
+     *
+     */
     protected function addColFromRaw(&$cols, $val, $create)
     {
         $name = $val['name'];
@@ -147,6 +193,17 @@ class SqliteSchema extends AbstractSchema
         );
     }
 
+    /**
+     *
+     * Converts the column info arrays to objects.
+     *
+     * @param array $cols The column info.
+     *
+     * @param string $create The SQL used to create the table.
+     *
+     * @return null
+     *
+     */
     protected function convertColsToObjects(&$cols, $create)
     {
         $names = array_keys($cols);
@@ -168,6 +225,25 @@ class SqliteSchema extends AbstractSchema
         }
     }
 
+    /**
+     *
+     * Sets the "default" value on a column info element.
+     *
+     * @param array $cols The column info.
+     *
+     * @param string $name The current column name.
+     *
+     * @param int $curr The current column info element number.
+     *
+     * @param int $last The last column info element number.
+     *
+     * @param array $names An array of column names.
+     *
+     * @param string $create The SQL used to create the table.
+     *
+     * @return null
+     *
+     */
     protected function setColumnDefault(&$cols, $name, $curr, $last, $names, $create)
     {
         // For defaults using keywords, SQLite always reports the keyword

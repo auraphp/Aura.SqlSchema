@@ -3,8 +3,6 @@
  *
  * This file is part of Aura for PHP.
  *
- * @package Aura.SqlSchema
- *
  * @license http://opensource.org/licenses/bsd-license.php BSD
  *
  */
@@ -15,7 +13,7 @@ namespace Aura\SqlSchema;
  * Represents one column from a table.
  *
  * @package Aura.SqlSchema
- * 
+ *
  * @property-read string      $name    the column name
  * @property-read string      $type    the column data type, as reported by the database
  * @property-read int|null    $size    the column size (if defined)

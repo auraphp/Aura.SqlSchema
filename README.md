@@ -7,7 +7,7 @@ using a [PDO](http://php.net/PDO) connection.
 
 ### Installation
 
-This library requires PHP 5.3 or later, and has no userland dependencies.
+This library requires PHP 5.3 or later (PHP 7 is supported), and has no userland dependencies.
 
 It is installable and autoloadable via Composer as [aura/sqlschema](https://packagist.org/packages/aura/sqlschema).
 

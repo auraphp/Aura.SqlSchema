@@ -33,11 +33,6 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function test__isset()
-    {
-
-    }
-
     public function test__set_state()
     {
         $info = array(
@@ -76,9 +71,15 @@ Aura\SqlSchema\Column::__set_state(array(
 ))
 EXPECT;
         if (defined('HHVM_VERSION')) {
-          $expect = str_replace('   ', '  ', $expect);
+            $expect = str_replace('   ', '  ', $expect);
         }
 
+        // check the export
+        $this->assertSame($expect, $actual);
+
+        // check __set_state() directly
+        $col = Column::__set_state($info);
+        $actual = var_export($col, true);
         $this->assertSame($expect, $actual);
     }
 }

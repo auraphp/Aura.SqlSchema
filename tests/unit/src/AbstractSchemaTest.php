@@ -13,6 +13,8 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
 
     protected $expect_fetch_table_cols;
 
+    protected $expect_quote_name = '"one"."two"';
+
     public function setUp()
     {
         // skip if we don't have the extension
@@ -90,5 +92,11 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
         foreach ($expect as $name => $info) {
             $this->assertEquals($expect[$name], $actual[$name]);
         }
+    }
+
+    public function testQuoteName()
+    {
+        $actual = $this->schema->quoteName('one.two');
+        $this->assertSame($this->expect_quote_name, $actual);
     }
 }

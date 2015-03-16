@@ -83,4 +83,6 @@ class MysqlSchemaTest extends AbstractSchemaTest
             'autoinc' => false,
         ),
     );
+
+    protected $expect_quote_name = "`one`.`two`";
 }

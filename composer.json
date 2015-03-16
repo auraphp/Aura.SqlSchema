@@ -18,7 +18,7 @@
         "sql",
         "ddl"
     ],
-    "homepage": "https://github.com/auraphp/Aura.SqlSchema/releases",
+    "homepage": "https://github.com/auraphp/Aura.SqlSchema",
     "license": "BSD-2-Clause",
     "authors": [
         {

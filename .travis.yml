@@ -4,15 +4,15 @@ php:
   - 5.4
   - 5.5
   - 5.6
-  - 7
   - hhvm
+  - 7
 before_script:
   - "mysql -e 'DROP DATABASE IF EXISTS test;'"
   - "mysql -e 'create database test;'"
   - "psql -c 'DROP DATABASE IF EXISTS test;' -U postgres"
   - "psql -c 'create database test;' -U postgres"
 script:
-  - phpunit -c tests/unit/ --coverage-clover=coverage.clover
+  - phpunit --coverage-clover=coverage.clover
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

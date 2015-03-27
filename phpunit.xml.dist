@@ -1,0 +1,24 @@
+<phpunit bootstrap="./phpunit.php">
+    <testsuites>
+        <testsuite>
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <var name="Aura_SqlSchema_Setup_MysqlSetup__dsn" value="mysql:host=127.0.0.1" />
+        <var name="Aura_SqlSchema_Setup_MysqlSetup__username" value="root" />
+        <var name="Aura_SqlSchema_Setup_MysqlSetup__password" value="" />
+
+        <var name="Aura_SqlSchema_Setup_PgsqlSetup__dsn" value="pgsql:host=127.0.0.1;dbname=test" />
+        <var name="Aura_SqlSchema_Setup_PgsqlSetup__username" value="postgres" />
+        <var name="Aura_SqlSchema_Setup_PgsqlSetup__password" value="" />
+
+        <var name="Aura_SqlSchema_Setup_SqliteSetup__dsn" value="sqlite::memory:" />
+        <var name="Aura_SqlSchema_Setup_SqliteSetup__username" value="" />
+        <var name="Aura_SqlSchema_Setup_SqliteSetup__password" value="" />
+
+        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__dsn" value="sqlsrv:Server=localhost\\SQLEXPRESS;Database=test" />
+        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__username" value="" />
+        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__password" value="" />
+    </php>
+</phpunit>

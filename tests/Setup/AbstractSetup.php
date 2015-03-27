@@ -17,13 +17,12 @@ abstract class AbstractSetup
 
     public function __construct()
     {
-        $pdo_params = $GLOBALS[get_class($this)]['pdo_params'];
-
+        $key = str_replace('\\', '_', get_class($this));
         $this->pdo = new PDO(
-            $pdo_params['dsn'],
-            $pdo_params['username'],
-            $pdo_params['password'],
-            $pdo_params['options']
+            $GLOBALS["{$key}__dsn"],
+            $GLOBALS["{$key}__username"],
+            $GLOBALS["{$key}__password"],
+            array()
         );
 
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

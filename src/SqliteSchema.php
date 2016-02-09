@@ -188,7 +188,7 @@ class SqliteSchema extends AbstractSchema
             'scale'   => ($scale ? (int) $scale : null),
             'default' => $default,
             'notnull' => (bool) ($val['notnull']),
-            'primary' => (bool) ($val['pk'] == 1),
+            'primary' => (bool) ($val['pk']),
             'autoinc' => (bool) $autoinc,
         );
     }

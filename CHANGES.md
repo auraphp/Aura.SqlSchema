@@ -1,1 +1,1 @@
-This release modifies the testing structure and updates other support files.
+This release fixes a bug so that composite primary keys in SQLite are recognized.

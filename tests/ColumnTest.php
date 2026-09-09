@@ -1,7 +1,7 @@
 <?php
 namespace Aura\SqlSchema;
 
-class ColumnTest extends \PHPUnit\Framework\TestCase
+class ColumnTest extends \Yoast\PHPUnitPolyfills\TestCases\TestCase
 {
     public function testConstruct()
     {

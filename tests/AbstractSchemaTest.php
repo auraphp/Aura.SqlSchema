@@ -1,7 +1,7 @@
 <?php
 namespace Aura\SqlSchema;
 
-abstract class AbstractSchemaTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractSchemaTest extends \Yoast\PHPUnitPolyfills\TestCases\TestCase
 {
     protected $extension;
 
@@ -17,7 +17,7 @@ abstract class AbstractSchemaTest extends \PHPUnit\Framework\TestCase
 
     protected $setup;
 
-    protected function setUp(): void
+    protected function set_up()
     {
         // skip if we don't have the extension
         if (! extension_loaded($this->extension)) {

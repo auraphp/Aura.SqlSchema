@@ -1,7 +1,7 @@
 <?php
 namespace Aura\SqlSchema;
 
-abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractSchemaTest extends \PHPUnit\Framework\TestCase
 {
     protected $extension;
 
@@ -15,7 +15,9 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
 
     protected $expect_quote_name = '"one"."two"';
 
-    public function setUp()
+    protected $setup;
+
+    protected function setUp(): void
     {
         // skip if we don't have the extension
         if (! extension_loaded($this->extension)) {
@@ -36,9 +38,17 @@ abstract class AbstractSchemaTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        // database setup
+        // database setup. The extension being loaded does not mean a server
+        // is actually reachable -- pdo_mysql ships enabled on most builds --
+        // so a connection failure skips rather than errors.
         $setup_class = 'Aura\SqlSchema\Setup\\' . ucfirst($this->pdo_type) . 'Setup';
-        $this->setup = new $setup_class;
+        try {
+            $this->setup = new $setup_class;
+        } catch (\PDOException $e) {
+            $this->markTestSkipped(
+                "No {$this->pdo_type} server available: " . $e->getMessage()
+            );
+        }
 
         // schema class same as this class, minus "Test"
         $class = substr(get_class($this), 0, -4);

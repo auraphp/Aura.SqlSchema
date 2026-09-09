@@ -1,7 +1,7 @@
 <?php
 namespace Aura\SqlSchema;
 
-class ColumnTest extends \PHPUnit_Framework_TestCase
+class ColumnTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstruct()
     {
@@ -57,7 +57,10 @@ class ColumnTest extends \PHPUnit_Framework_TestCase
             $info['primary']
         );
 
-        $actual = var_export($col, true);
+        // PHP 8.2 changed var_export() to emit fully-qualified class
+        // names, so from 8.2 onward the export carries a leading
+        // backslash. Normalize it away so one expectation covers both.
+        $actual = ltrim(var_export($col, true), '\\');
         $expect = <<<EXPECT
 Aura\SqlSchema\Column::__set_state(array(
    'name' => 'cost',
@@ -79,7 +82,7 @@ EXPECT;
 
         // check __set_state() directly
         $col = Column::__set_state($info);
-        $actual = var_export($col, true);
+        $actual = ltrim(var_export($col, true), '\\');
         $this->assertSame($expect, $actual);
     }
 }

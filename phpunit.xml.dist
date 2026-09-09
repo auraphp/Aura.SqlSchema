@@ -1,24 +1,20 @@
-<phpunit bootstrap="./phpunit.php">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="./phpunit.php"
+         colors="true"
+         failOnWarning="true"
+         failOnDeprecation="true">
     <testsuites>
-        <testsuite>
+        <testsuite name="Aura.SqlSchema">
             <directory>./tests</directory>
+            <!-- a shared base class, not a suite of its own -->
+            <exclude>./tests/AbstractSchemaTest.php</exclude>
         </testsuite>
     </testsuites>
-    <php>
-        <var name="Aura_SqlSchema_Setup_MysqlSetup__dsn" value="mysql:host=127.0.0.1" />
-        <var name="Aura_SqlSchema_Setup_MysqlSetup__username" value="root" />
-        <var name="Aura_SqlSchema_Setup_MysqlSetup__password" value="" />
-
-        <var name="Aura_SqlSchema_Setup_PgsqlSetup__dsn" value="pgsql:host=127.0.0.1;dbname=test" />
-        <var name="Aura_SqlSchema_Setup_PgsqlSetup__username" value="postgres" />
-        <var name="Aura_SqlSchema_Setup_PgsqlSetup__password" value="" />
-
-        <var name="Aura_SqlSchema_Setup_SqliteSetup__dsn" value="sqlite::memory:" />
-        <var name="Aura_SqlSchema_Setup_SqliteSetup__username" value="" />
-        <var name="Aura_SqlSchema_Setup_SqliteSetup__password" value="" />
-
-        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__dsn" value="sqlsrv:Server=localhost\\SQLEXPRESS;Database=test" />
-        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__username" value="" />
-        <var name="Aura_SqlSchema_Setup_SqlsrvSetup__password" value="" />
-    </php>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
 </phpunit>
